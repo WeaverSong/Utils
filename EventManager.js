@@ -173,4 +173,5 @@ export default class EventManager
 
 };
 
+//Debug stuff
 let EM = new EventManager();

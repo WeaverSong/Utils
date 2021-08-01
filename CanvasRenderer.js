@@ -592,6 +592,7 @@ export default class CanvasRenderer
 
 };
 
-//Temp
-//var a = new CanvasRenderer();
-//document.body.appendChild(a.canvas);
+
+//Debug stuff
+let CR = new CanvasRenderer();
+document.body.appendChild(a.canvas);
