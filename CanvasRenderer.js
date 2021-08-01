@@ -9,7 +9,7 @@
     All settings only apply to things drawn after they were changed. All drawing methods take a final, optional, 'Settings' object for what settings to override for this drawing specifically. These settings are temporary and will not affect any other drawings.
 
 */
-export default class CanvasRenderer
+class CanvasRenderer
 {
 
     constructor(Defaults)

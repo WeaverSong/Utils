@@ -3,7 +3,7 @@
     Handles events. All methods return a boolean of whether they succeeded.
 
 */
-export default class EventManager
+class EventManager
 {
     constructor(events = [], tickLength = 16)
     {

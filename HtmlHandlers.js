@@ -1,5 +1,5 @@
 //Recursive function to handle properties within properties
-export const HandleSubs = function (element, property, properties)
+const HandleSubs = function (element, property, properties)
 {
     for (key in properties)
     {
@@ -11,7 +11,7 @@ export const HandleSubs = function (element, property, properties)
     }
 }
 //Makes a new element, adds it to the parent, and adds all specified properties and event listeners
-export const AddElement = function (type, parent, properties, eventListeners)
+const AddElement = function (type, parent, properties, eventListeners)
 {
     let NewElement = document.createElement(type);
 
@@ -27,7 +27,7 @@ export const AddElement = function (type, parent, properties, eventListeners)
     return NewElement;
 };
 //Applies properties and event listeners to an element
-export const EditElement = function (element, properties, eventListeners)
+const EditElement = function (element, properties, eventListeners)
 {
 
     HandleSubs(element, element, properties);
