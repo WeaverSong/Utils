@@ -800,8 +800,3 @@ export default class CanvasRenderer
     };
 
 };
-
-
-//Debug stuff
-let CR = new CanvasRenderer();
-document.body.appendChild(a.canvas);
