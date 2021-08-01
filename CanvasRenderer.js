@@ -2,6 +2,12 @@
 
     More elegant and flexible replacement to Processing JS.
 
+    NOTES:
+
+    'i' is an internal boolean paremter used to avoid conflicts with setting temp values. Completely useless if used from the outside - setting it would only prevent the command from working.
+
+    All settings only apply to things drawn after they were changed. All drawing methods take a final, optional, 'Settings' object for what settings to override for this drawing specifically. These settings are temporary and will not affect any other drawings.
+
 */
 export default class CanvasRenderer
 {
@@ -74,6 +80,9 @@ export default class CanvasRenderer
 
     };
 
+    //Basic settings and value adjusting stuff
+
+    //Takes an object of what settings to modify. If no inputs are given, returns the current settings object.
     Settings(Settings)
     {
 
@@ -92,7 +101,7 @@ export default class CanvasRenderer
         this.#SetValues(this.settings);
 
     };
-
+    //Used to set temp values - so single commands can do something different than the current settings.
     #SetValues(Settings)
     {
         this.ts = JSON.parse(JSON.stringify(this.settings));
@@ -119,7 +128,7 @@ export default class CanvasRenderer
         this.Size(this.ts.size, true);
 
     };
-
+    //Adjusts the defaults with the specified object and resets to them. If not specified returns the current defaults object.
     Defaults(Settings)
     {
 
@@ -136,6 +145,12 @@ export default class CanvasRenderer
         this.Settings(this.defaults);
     };
 
+    //Adjusting single settings. Used internally to actually set things on the context - the others are just for consistency. If not inputs are provided, returns the specified setting
+
+    //The size of the canvas. WARNING: Will blank out all data when changed.
+    /*
+        Settings: Size-Vector
+    */
     Size(Settings, i)
     {
 
@@ -145,11 +160,39 @@ export default class CanvasRenderer
         if (Settings.height !== this.canvas.height) this.canvas.height = Settings.height;
 
         if (!i) this.settings.size = Settings;
+
     };
-
-
+    //Setting the fillStyle
+    /*
+        Settings: string CSS color OR
+        gradient/pattern object.
+        {
+            type: "LinearGradient",
+            x1: number,
+            y1: number,
+            x2: number,
+            y2: number,
+            stops: []{offset: number, color: string CSS color}
+        }
+        {
+            type: "RadialGradient",
+            x1: number,
+            y1: number,
+            r1: number (inner radius),
+            x2: number,
+            y2: number,
+            r2: number (outer radius),
+            stops: []{offset: number, color: string CSS color}
+        }
+        {
+            type: "Pattern",
+            image: CanvasImageSource,
+            repetition: String - values unkown
+        }
+    */
     Fill(Settings, i)
     {
+
         if (Settings === undefined)
         {
             return this.settings.fill;
@@ -187,10 +230,15 @@ export default class CanvasRenderer
         }
 
         if (!i) this.settings.fill = Settings;
-    };
 
+    };
+    //Setting the strokeStyle.
+    /*
+        Settings: See Fill (Above)
+    */
     Stroke(Settings, i)
     {
+
         if (Settings === undefined)
         {
             return this.settings.stroke;
@@ -228,8 +276,18 @@ export default class CanvasRenderer
         }
 
         if (!i) this.settings.stroke = Settings;
-    };
 
+    };
+    //Setting the Shadow. 'blue: 0' will disable shadows
+    /*
+        Settings: Object
+        {
+            ?color: string CSS color,
+            ?blur: number,
+            ?x: number,
+            ?y: number
+        }
+    */
     Shadow(Settings, i)
     {
 
@@ -246,8 +304,18 @@ export default class CanvasRenderer
         this.ctx.shadowOffsetY = Settings.y;
 
         if (!i) this.settings.shadow = Settings;
-    };
 
+    };
+    //Setting the line settings
+    /*
+        Settings: Object
+        {
+            ?cap: string. 'butt || round || square',
+            ?join: string. 'miter || bevel || round',
+            ?width: number,
+            ?miterLimit: number
+        }
+    */
     Line(Settings, i)
     {
 
@@ -264,8 +332,12 @@ export default class CanvasRenderer
         this.ctx.miterLimit = Settings.miterLimit;
 
         if (!i) this.settings.line = Settings;
-    };
 
+    };
+    //Setting the scaling.
+    /*
+        Settings: Point-Vector
+    */
     Scale(Settings, i)
     {
 
@@ -278,11 +350,15 @@ export default class CanvasRenderer
 
         if (!i)
         {
-            this.settings.scale.x *= Settings.x;
-            this.settings.scale.y *= Settings.y;
+            this.settings.scale.x = Settings.x;
+            this.settings.scale.y = Settings.y;
         }
-    };
 
+    };
+    //Setting the rotation.
+    /*
+        Settings: RADIANS
+    */
     Rotation(Settings, i)
     {
 
@@ -291,8 +367,12 @@ export default class CanvasRenderer
         this.ctx.rotate(Settings);
 
         if (!i) this.settings.rotation = Settings;
-    };
 
+    };
+    //Setting the translation.
+    /*
+        Settings: Point-Vector
+    */
     Translation(Settings, i)
     {
 
@@ -305,11 +385,15 @@ export default class CanvasRenderer
 
         if (!i)
         {
-            this.settings.translation.x += Settings.x;
-            this.settings.translation.y += Settings.y;
+            this.settings.translation.x = Settings.x;
+            this.settings.translation.y = Settings.y;
         }
-    };
 
+    };
+    //Setting the skew.
+    /*
+        Settings: Point-Vector
+    */
     Skew(Settings, i)
     {
 
@@ -325,8 +409,12 @@ export default class CanvasRenderer
             this.settings.skew.x = Settings.x;
             this.settings.skew.y = Settings.y;
         }
-    };
 
+    };
+    //Setting the font.
+    /*
+        Settings: string CSS font properties
+    */
     Font(Settings, i)
     {
 
@@ -335,8 +423,12 @@ export default class CanvasRenderer
         this.ctx.font = Settings;
 
         if (!i) this.settings.font = Settings;
-    };
 
+    };
+    //Setting the text align.
+    /*
+        Settings: string 'start || center || end'
+    */
     TextAlign(Settings, i)
     {
 
@@ -345,8 +437,14 @@ export default class CanvasRenderer
         this.ctx.textAlign = Settings;
 
         if (!i) this.settings.textAlign = Settings;
-    };
 
+    };
+    //Setting the text baseline.
+    /*
+        Settings: string 'alphabetic || top || hanging || middle || ideographic || bottom'
+
+        RefLink - https://www.w3schools.com/tags/img_textbaseline.gif
+    */
     TextBaseLine(Settings, i)
     {
 
@@ -355,32 +453,78 @@ export default class CanvasRenderer
         this.ctx.textBaseline = Settings;
 
         if (!i) this.settings.textBaseLine = Settings;
-    };
 
+    };
+    //Setting the global transparency
+    /*
+        Settings: number, 0-1
+    */
+    Alpha(Settings, i)
+    {
+
+        if (Settings === undefined) return this.settings.alpha;
+
+        this.ctx.globalAlpha = Settings;
+
+        if (!i) this.settings.alpha = Settings;
+    };
+    //Setting how the total is composited from the parts.
+    /*
+        Settings: string, 'source-over || source-atop || source-in || source-out || destination-over || destination-atop || destination-in || destination-out || lighter || copy || xor'
+    */
+    CompositeOperation(Settings, i)
+    {
+
+        if (Settings === undefined) return this.settings.compositeOperation;
+
+        this.ctx.globalCompositeOperation = Settings;
+
+        if (!i) this.settings.compositeOperation = Settings;
+    };
+    //Setting Whether text should be filled. Pseudo-method. Only exists for consistency.
+    /*
+        Settings: boolean
+    */
     TextFill(Settings)
     {
 
         if (Settings === undefined) return this.settings.textFill;
         this.settings.textFill = Settings;
-    };
 
+    };
+    //Setting the max width for drawing text. Pseudo-method. Only exists for consistency.
+    /*
+        Settings: number
+    */
     MaxTextWidth(Settings)
     {
 
         if (Settings === undefined) return this.settings.maxTextWidth;
         this.settings.maxTextWidth = Settings;
-    };
 
+    };
+    //Setting the size for images draw. Optional if image is not being clipped. Pseudo-method. Only exists for consistency.
+    /*
+        Settings: Size-Vector
+    */
     ImageSize(Settings)
     {
 
         if (Settings === undefined) return this.settings.imageSize;
 
-        if (Settings.width !== undefined) this.settings.imageSize.width = Settings.width;
-        if (Settings.height !== undefined) this.settings.imageSize.height = Settings.height;
+        this.settings.imageSize = Settings;
 
     };
-
+    //Setting the rectangular piece of the image to draw. Optional. Pseudo-method. Only exists for consistency.
+    /*
+        Settings: Object
+        {
+            ?x: number,
+            ?y: number,
+            ?width: number,
+            ?height: number
+        }
+    */
     ImageClipping(Settings)
     {
 
@@ -393,26 +537,51 @@ export default class CanvasRenderer
 
     };
 
-    Alpha(Settings, i)
-    {
-
-        if (Settings === undefined) return this.settings.alpha;
-
-        this.ctx.globalAlpha = Settings;
-
-        if (!i) this.settings.alpha = Settings;
-    };
-
-    CompositeOperation(Settings, i)
-    {
-
-        if (Settings === undefined) return this.settings.compositeOperation;
-
-        this.ctx.globalCompositeOperation = Settings;
-
-        if (!i) this.settings.compositeOperation = Settings;
-    };
-
+    //Drawing methods. Draw things to the canvas. All 'Settings' inputs are for temp-settings, used only for this drawing operation
+    
+    //Drawing a generic shape.
+    /*
+        Positions: Array.
+        
+        Each item is one of the following:
+        {
+            x: number,
+            y: number,
+            ?type: "Point"
+        }
+        {
+            type: "QuadraticCurveTo",
+            cx: number,
+            cy: number,
+            x: number,
+            y: number
+        }
+        {
+            type: "BezierCurveTo",
+            cx1: number,
+            cy1: number,
+            cx2: number,
+            cy2: number,
+            x: number,
+            y: number
+        }
+        {
+            type: "Arc",
+            x: number,
+            y: number,
+            radius: number,
+            startAngle: RADIANS,
+            endAngle: RADIANS,
+            ?antiClockWise: boolean
+        }
+        {
+            type: "ArcTo",
+            cx: number,
+            cy: number,
+            x: number,
+            y: number
+        }
+    */
     DrawShape(Positions, Settings)
     {
 
@@ -443,7 +612,7 @@ export default class CanvasRenderer
                 this.ctx.arc(i.x, i.y, i.radius, i.startAngle, i.endAngle, i.antiClockWise);
             } else if (i.type === "ArcTo")
             {
-                this.ctx.arcTo(i.cx1, i.cy1, i.x, i.y);
+                this.ctx.arcTo(i.cx, i.cy, i.x, i.y);
             }
         });
         this.ctx.closePath();
@@ -451,7 +620,11 @@ export default class CanvasRenderer
         this.ctx.stroke();
         this.ctx.fill();
     };
-
+    //Drawing text
+    /*
+        Text: string,
+        Position: Point-Vector
+    */
     DrawText(Text, Position, Settings)
     {
 
@@ -465,7 +638,11 @@ export default class CanvasRenderer
             this.ctx.strokeText(Text, Position.x, Position.y, this.ts.maxTextWidth)
         }
     };
-
+    //Drawing an image to the canvas
+    /*
+        Img: CanvasImageSource,
+        Position: Point-Vector
+    */
     DrawImage(Img, Position, Settings)
     {
 
@@ -480,7 +657,11 @@ export default class CanvasRenderer
             this.ctx.drawImage(Img, c.x, c.y, c.width, c.height, this.ts.imageSize.width, this.ts.imageSize.height);
         }
     }
-
+    //Draws ImageData to the canvas.
+    /*
+        Data: ImageData (array),
+        Position: Point-Vector
+    */
     DrawImageData(Data, Position, Settings)
     {
 
@@ -489,15 +670,32 @@ export default class CanvasRenderer
         this.ctx.putImageData(Data, Position.x, Position.y);
 
     }
-
+    //Resets the canvas.
     Reset()
     {
         this.canvas.width = this.settings.width;
         this.Defaults();
     }
 
-    //Additional functionality
+    //Additional related-and-helpful functions
+    
+    //Gets a rectangular section of the canvas as ImageData
+    /*
+        Position: Point-Vector,
+        Size: Size-Vector
+    */
+    GetImageData(Position, Size)
+    {
+        return this.ctx.getImageData(Position.x, Position.y, Size.width, Size.height);
+    }
+    //Returns whether the point is within the path.
+    /*
+        Path: Array. See DrawShape,
+        Point: Point-Vector,
+        ?fillRule: string 'nonzero || evenodd'
 
+        wiki for fillRule - https://en.wikipedia.org/wiki/Nonzero-rule
+    */
     Collides(Path, Point, fillRule = "nonzero")
     {
 
@@ -537,7 +735,11 @@ export default class CanvasRenderer
         return this.ctx.isPointInPath(path, Point.x, Point.y, fillRule)
 
     }
-
+    //Measures the width of text, given the current or temporary settings
+    /*
+        Text: string,
+        Settings: Temporary override settings object
+    */
     MeasureText(Text, Settings)
     {
 
@@ -546,23 +748,30 @@ export default class CanvasRenderer
         return this.ctx.measureText(Text);
 
     }
-
+    //Creates a blank piece of ImageData
+    /*
+        Size: Size-Vector
+    */
     CreateImageData(Size)
     {
         return this.ctx.createImageData(Size.width, size.height);
     }
-
-    GetImageData(Position, Size)
-    {
-        return this.ctx.getImageData(Position.x, Position.y, Size.width, Size.height);
-    }
-
+    //Returns the current state of the canvas as a DataURL
     GetDataURL()
     {
         return this.canvas.toDataURL();
     }
-
-    RandomHSLAColor(input)
+    //Returns a random CSS HSLA color.
+    /*
+        Input: overrides Object
+        {
+            ?hue: number 0-255,
+            ?sat: number 0-100,
+            ?light: number 0-100,
+            ?alpha: number 0-1
+        }
+    */
+    RandomHSLAColor(Input)
     {
         if (hue === undefined)
         {
@@ -576,9 +785,9 @@ export default class CanvasRenderer
             alpha: (Math.random() * 0.7) + 0.3
         }
 
-        for (key in input)
+        for (key in Input)
         {
-            c[key] = input[key];
+            c[key] = Input[key];
         }
 
         while (alpha > 1)
