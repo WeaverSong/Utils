@@ -3,7 +3,7 @@
     More elegant and flexible replacement to Processing JS.
 
 */
-export class CanvasRenderer
+export default class CanvasRenderer
 {
 
     constructor(Defaults)

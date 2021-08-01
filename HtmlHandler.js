@@ -39,3 +39,7 @@ const HandleElement = function (element, properties, eventListeners)
 
     return element;
 };
+
+export default class HtmlHandler {
+
+}
