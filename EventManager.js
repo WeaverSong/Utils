@@ -80,6 +80,7 @@ export default class EventManager
                     }
                 });
             });
+            return true;
         }
         else
         {
