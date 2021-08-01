@@ -54,7 +54,7 @@ class EventManager
     };
 
     //Subscribes to a specified event.
-    subsribe(source, event, func)
+    subscribe(source, event, func)
     {
         //Fail if there was something wrong with the event or inputs
         if (typeof (func) !== "function"
