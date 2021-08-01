@@ -592,9 +592,6 @@ class CanvasRenderer
         {
             this.ctx.moveTo(Positions[0].x, Positions[0].y);
             Positions.splice(0, 1);
-        } else
-        {
-            this.ctx.moveTo(0, 0);
         }
         Positions.forEach(i =>
         {
