@@ -84,4 +84,4 @@ class MapManager {
     getTile(x, y) {
         return this.Map[y][x];
     };
-}
+};
