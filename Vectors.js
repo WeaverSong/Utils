@@ -75,36 +75,36 @@ class Vec2 {
 
     //Add 2 vectors, or a vector and a number
     static Add (vec1, vec2) {
-        if (typeof(vec2) === "number") vec2 = {x: vec2, y: vec2}
+        vec1 = new Vec2(vec1);
+        vec2 = new Vec2(vec2);
         return new Vec2(vec1.x + vec2.x, vec1.y + vec2.y);
     };
     //Subtract 2 vectors, or a vector and a number
     static Subtract (vec1, vec2) {
-        if (typeof(vec2) === "number") vec2 = {x: vec2, y: vec2}
+        vec1 = new Vec2(vec1);
+        vec2 = new Vec2(vec2);
         return new Vec2(vec1.x - vec2.x, vec1.y - vec2.y);
     };
     //Multiply 2 vectors, or a vector and a number
     static Multiply (vec1, vec2) {
-        if (typeof(vec2) === "number") vec2 = {x: vec2, y: vec2}
+        vec1 = new Vec2(vec1);
+        vec2 = new Vec2(vec2);
         return new Vec2(vec1.x * vec2.x, vec1.y * vec2.y);
     };
     //Divide 2 vectors, or a vector and a number
     static Divide (vec1, vec2) {
-        if (typeof(vec2) === "number") vec2 = {x: vec2, y: vec2}
+        vec1 = new Vec2(vec1);
+        vec2 = new Vec2(vec2);
         return new Vec2(vec1.x / vec2.x, vec1.y / vec2.y);
     };
     //Get the magnitue of a vector, by single or double input
     static Magnitude (x, y) {
-        let vec = x;
-
-        if (typeof(x) === "number") vec = {x: x, y: y};
-
+        let vec = new Vec2(x, y);
         return (Math.sqrt(vec.x * vec.x + vec.y * vec.y));
     };
     //Returns the normalized form of the vector, by single or double input
     static Normalized (x, y) {
-        let vec = x;
-        if (typeof(x) === "number") vec = {x: x, y: y};
-        return new Vec2(vec).Divide(Vec2.Magnitude(vec));
+        let vec = new Vec2(x, y);
+        return vec.Divide(vec.Magnitude());
     };
 };
