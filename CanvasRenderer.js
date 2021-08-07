@@ -692,6 +692,13 @@ class CanvasRenderer
         this.ctx.clearRect(0, 0, this.settings.size.width, this.settings.size.height);
         this.Defaults();
     }
+    //Resets a rectangular area
+    ResetRect(Point, Size, Settings) {
+
+        this.#SetValues(Settings);
+
+        this.ctx.clearRect(Point.x, Point.y, Size.width, Size.height)
+    }
 
     //Additional related-and-helpful functions
 
