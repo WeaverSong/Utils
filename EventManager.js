@@ -31,7 +31,8 @@ class EventManager
         this.tickLength = tickLength;
 
         //Call the tick function
-        setInterval(() => this.#tick(), tickLength)
+        //Skip if the tick length is negative
+        if (this.tickLength > 0) setInterval(() => this.#tick(), tickLength)
 
     }
 
