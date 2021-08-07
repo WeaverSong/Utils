@@ -12,7 +12,7 @@
 class CanvasRenderer
 {
 
-    constructor(Defaults)
+    constructor(Defaults, Canvas = document.createElement('canvas'))
     {
 
         this.defaults = {
@@ -64,15 +64,17 @@ class CanvasRenderer
                 height: undefined
             },
             alpha: 1,
-            compositeOperation: "source-over"
+            compositeOperation: "source-over",
+            noClose: false
         };
         this.settings = {};
 
-        if (Defaults && Defaults.size) this.defaults.size = Defaults.size;
-
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = this.defaults.size.width;
-        this.canvas.height = this.defaults.size.height;
+        this.canvas = Canvas;
+        if (Defaults && Defaults.size)
+        {
+            this.canvas.width = Defaults.size.width;
+            this.canvas.height = Defaults.size.height;
+        }
         this.ctx = this.canvas.getContext("2d");
 
         this.Defaults(Defaults);
@@ -278,7 +280,7 @@ class CanvasRenderer
         if (!i) this.settings.stroke = Settings;
 
     };
-    //Setting the Shadow. 'blue: 0' will disable shadows
+    //Setting the Shadow. 'blur: 0' will disable shadows
     /*
         Settings: Object
         {
@@ -536,9 +538,21 @@ class CanvasRenderer
         if (Settings.height !== undefined) this.settings.imageClipping.height = Settings.height;
 
     };
+    //Setting Whether the shape should skip the closing line. Pseudo-method. Only exists for consistency.
+    /*
+        Settings: boolean
+    */
+    NoClose(Settings)
+    {
+
+        if (Settings === undefined) return this.settings.noClose;
+
+        this.settings.noClose = Settings;
+
+    };
 
     //Drawing methods. Draw things to the canvas. All 'Settings' inputs are for temp-settings, used only for this drawing operation
-    
+
     //Drawing a generic shape.
     /*
         Positions: Array.
@@ -584,10 +598,12 @@ class CanvasRenderer
     */
     DrawShape(Positions, Settings)
     {
-
         this.#SetValues(Settings);
+        //Lets you pass an array in without it getting mangled
+        Positions = JSON.parse(JSON.stringify(Positions));
 
         this.ctx.beginPath();
+        let endPoint = {x: Positions[0].x, y: Positions[0].y};
         if (Positions[0].type === undefined || Positions[0].type === "Point")
         {
             this.ctx.moveTo(Positions[0].x, Positions[0].y);
@@ -612,6 +628,7 @@ class CanvasRenderer
                 this.ctx.arcTo(i.cx, i.cy, i.x, i.y);
             }
         });
+        if (this.ts.noClose) this.ctx.moveTo(endPoint.x, endPoint.y);
         this.ctx.closePath();
 
         this.ctx.stroke();
@@ -668,6 +685,7 @@ class CanvasRenderer
 
     }
     //Resets the canvas.
+    //NOT WORKING
     Reset()
     {
         this.canvas.width = this.settings.width;
@@ -675,13 +693,13 @@ class CanvasRenderer
     }
 
     //Additional related-and-helpful functions
-    
+
     //Gets a rectangular section of the canvas as ImageData
     /*
         Position: Point-Vector,
         Size: Size-Vector
     */
-    GetImageData(Position, Size)
+    GetImageData(Position = { x: 0, y: 0 }, Size = this.settings.size)
     {
         return this.ctx.getImageData(Position.x, Position.y, Size.width, Size.height);
     }

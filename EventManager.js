@@ -30,8 +30,8 @@ class EventManager
         this.lastTick = Date.now();
         this.tickLength = tickLength;
 
-        //Call the tick function for the first time.
-        this.#tick();
+        //Call the tick function
+        setInterval(() => this.#tick(), tickLength)
 
     }
 
@@ -73,13 +73,16 @@ class EventManager
         //If event is undefined, we want to unsubscribe from all events
         if (event === undefined)
         {
-            this.Queue.forEach(q => {
-                q.queue.forEach((ele, index) => {
-                    if (ele.source === source) {
-                        ele.splice(index, 0);
+            for (let key in this.Queue)
+            {
+                this.Queue[key].queue.forEach((ele, index) =>
+                {
+                    if (ele.source === source)
+                    {
+                        this.Queue[key].queue.splice(index, 1);
                     }
                 });
-            });
+            }
             return true;
         }
         else
@@ -159,17 +162,22 @@ class EventManager
     //Internal tick function.
     #tick()
     {
-        //Check how long it has been since the last tick. Send warning if tick was late.
-        let time = Date.now();
-        let tickLength = time - this.lastTick;
-        if (tickLength - this.tickLength > 100) console.warn(`EventManager is lagging behind by ${tickLength - this.tickLength}ms.`);
-        this.lastTick = time;
+        try
+        {
+            //Check how long it has been since the last tick. Send warning if tick was late.
+            let time = Date.now();
+            let tickLength = time - this.lastTick;
+            //if (tickLength - this.tickLength > 100) console.warn(`EventManager is lagging behind by ${tickLength - this.tickLength}ms.`);
+            this.lastTick = time;
 
-        //fire the tick events, and schedule ourselves for the next tick
-        this.fire('preTick');
-        this.fire('tick');
-        this.fire('postTick');
-        setTimeout(() => this.#tick(), this.tickLength);
+            //fire the tick events, and schedule ourselves for the next tick
+            this.fire('preTick');
+            this.fire('tick');
+            this.fire('postTick');
+        } catch (e) {
+            console.error("Tick function failed.", e);
+            
+        }
     }
 
 };
