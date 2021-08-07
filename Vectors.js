@@ -2,9 +2,12 @@
 class Vec2 {
     constructor (x, y)
     {
-        if (typeof(x) === "object") {
+        if (typeof(x) === "object" && x.x !== undefined) {
             this.x = x.x;
             this.y = x.y;
+        } else if (typeof(x) === "object") {
+            this.x = x[0];
+            this.y = x[1];
         } else if (y !== undefined) {
             this.x = x;
             this.y = y;
