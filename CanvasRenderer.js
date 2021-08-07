@@ -688,6 +688,7 @@ class CanvasRenderer
     //NOT WORKING
     Reset()
     {
+        this.ctx.transform(1, 0, 0, 1, 0, 0);
         this.ctx.clearRect(0, 0, this.settings.size.width, this.settings.size.height);
         this.Defaults();
     }
