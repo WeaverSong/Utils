@@ -5,9 +5,12 @@ class Vec2 {
         if (typeof(x) === "object") {
             this.x = x.x;
             this.y = x.y;
-        } else {
+        } else if (y !== undefined) {
             this.x = x;
             this.y = y;
+        } else {
+            this.x = x;
+            this.y = x;
         }
     };
 
