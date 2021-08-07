@@ -19,9 +19,7 @@ class Vec2 {
 
     //Adds a vector or a number, and returns this
     Add (x, y) {
-        let vec = x;
-        if (typeof(x) === "number" && y === undefined) vec = {x: x, y: x};
-        else if (typeof(x) === "number") vec = {x: x, y: y};
+        let vec = new Vec2(x, y)
 
         this.x += vec.x;
         this.y += vec.y;
@@ -29,9 +27,7 @@ class Vec2 {
     };
     //Subtracts a vector or number, and returns this
     Subtract (x, y) {
-        let vec = x;
-        if (typeof(x) === "number" && y === undefined) vec = {x: x, y: x};
-        else if (typeof(x) === "number") vec = {x: x, y: y};
+        let vec = new Vec2(x, y)
 
         this.x -= vec.x;
         this.y -= vec.y;
@@ -39,9 +35,7 @@ class Vec2 {
     };
     //Multiplies a vector or number, and returns this
     Multiply (x, y) {
-        let vec = x;
-        if (typeof(x) === "number" && y === undefined) vec = {x: x, y: x};
-        else if (typeof(x) === "number") vec = {x: x, y: y};
+        let vec = new Vec2(x, y)
 
         this.x *= vec.x;
         this.y *= vec.y;
@@ -49,9 +43,7 @@ class Vec2 {
     };
     //Divides a vector or number, and returns this
     Divide (x, y) {
-        let vec = x;
-        if (typeof(x) === "number" && y === undefined) vec = {x: x, y: x};
-        else if (typeof(x) === "number") vec = {x: x, y: y};
+        let vec = new Vec2(x, y)
 
         this.x /= vec.x;
         this.y /= vec.y;
