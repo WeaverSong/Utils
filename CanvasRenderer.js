@@ -639,7 +639,7 @@ class CanvasRenderer
         Text: string,
         Position: Point-Vector
     */
-    DrawText(Text, Position, Settings)
+    DrawText(Text, Position = { x: 0, y: 0 }, Settings)
     {
 
         this.#SetValues(Settings);
@@ -657,7 +657,7 @@ class CanvasRenderer
         Img: CanvasImageSource,
         Position: Point-Vector
     */
-    DrawImage(Img, Position, Settings)
+    DrawImage(Img, Position = { x: 0, y: 0 }, Settings)
     {
 
         this.#SetValues(Settings);
@@ -676,7 +676,7 @@ class CanvasRenderer
         Data: ImageData (array),
         Position: Point-Vector
     */
-    DrawImageData(Data, Position, Settings)
+    DrawImageData(Data, Position = { x: 0, y: 0 }, Settings)
     {
 
         this.#SetValues(Settings);
@@ -775,7 +775,7 @@ class CanvasRenderer
     /*
         Size: Size-Vector
     */
-    CreateImageData(Size)
+    CreateImageData(Size = this.settings.size)
     {
         return this.ctx.createImageData(Size.width, size.height);
     }
