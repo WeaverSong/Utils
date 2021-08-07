@@ -688,7 +688,7 @@ class CanvasRenderer
     //NOT WORKING
     Reset()
     {
-        this.canvas.width = this.settings.width;
+        this.ctx.clearRect(0, 0, this.settings.size.width, this.settings.size.height);
         this.Defaults();
     }
 
