@@ -112,6 +112,125 @@ class Vec2 {
     };
 };
 
+//Takes an object with x, y and z, an array of 3 items, 3 numbers, or 1 number.
+class Vec3 {
+    constructor (x, y, z)
+    {
+        if (typeof(x) === "object" && x.x !== undefined && x.z !== undefined) {
+            this.x = x.x;
+            this.y = x.y;
+            this.z = x.z;
+        } else if (typeof(x) === "object") {
+            this.x = x[0];
+            this.y = x[1];
+            this.z = x[2];
+        } else if (y !== undefined) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        } else {
+            this.x = x;
+            this.y = x;
+            this.z = x;
+        }
+
+        if (this.x === undefined) this.x = 0;
+        if (this.y === undefined) this.y = 0;
+        if (this.z === undefined) this.z = 0;
+    };
+
+    //Adds a vector or a number, and returns this
+    Add (x, y, z) {
+        let vec = new Vec3 (x, y, z);
+
+        this.x += vec.x;
+        this.y += vec.y;
+        this.z += vec.z;
+        return this;
+    };
+    //Subtracts a vector or number, and returns this
+    Subtract (x, y, z) {
+        let vec = new Vec3 (x, y, z);
+
+        this.x -= vec.x;
+        this.y -= vec.y;
+        this.z -= vec.z;
+        return this;
+    };
+    //Multiplies a vector or number, and returns this
+    Multiply (x, y, z) {
+        let vec = new Vec3 (x, y, z);
+
+        this.x *= vec.x;
+        this.y *= vec.y;
+        this.z *= vec.z;
+        return this;
+    };
+    //Divides a vector or number, and returns this
+    Divide (x, y, z) {
+        let vec = new Vec3 (x, y, z);
+
+        this.x /= vec.x;
+        this.y /= vec.y;
+        this.z /= vec.z;
+        return this;
+    };
+    //Normalizes the vector, and returns this
+    Normalize () {
+        let vec = Vec3.Normalized(this);
+        this.x = vec.x;
+        this.y = vec.y;
+        this.z = vec.z;
+        return this;
+    };
+    //Returns the magnitude of the vector
+    Magnitude () {
+        return Vec3.Magnitude(this);
+    };
+    //Returns the normalized equivalent of the vector
+    Normalized () {
+        return Vec3.Normalized(this);
+    };
+
+
+    //Static methods
+
+    //Add 2 vector-types
+    static Add (vec1, vec2) {
+        vec1 = new Vec3(vec1);
+        vec2 = new Vec3(vec2);
+        return vec1.Add(vec2);
+    };
+    //Subtract 2 vector-types
+    static Subtract (vec1, vec2) {
+        vec1 = new Vec3(vec1);
+        vec2 = new Vec3(vec2);
+        return vec1.Subtract(vec2);
+    };
+    //Multiply 2 vector-types
+    static Multiply (vec1, vec2) {
+        vec1 = new Vec3(vec1);
+        vec2 = new Vec3(vec2);
+        return vec1.Multiply(vec2);
+    };
+    //Divide 2 vector-types
+    static Divide (vec1, vec2) {
+        vec1 = new Vec3(vec1);
+        vec2 = new Vec3(vec2);
+        return vec1.Divide(vec2);
+    };
+    //Get the magnitue of a vector-type, by single or triple input
+    static Magnitude (x, y, z) {
+        let vec = new Vec3(x, y, z);
+        return (Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
+    };
+    //Returns the normalized form of a vector-type, by single or triple input
+    static Normalized (x, y, z) {
+        let vec = new Vec3(x, y, z);
+        return vec.Divide(vec.Magnitude());
+    };
+};
+
 //Creates a vector with an arbitrary number of values. Can take in a VecX, Vec2, Vec3, Array, or number;
 class VecX {
     constructor (values) {
