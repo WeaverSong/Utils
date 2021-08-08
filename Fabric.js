@@ -14,10 +14,11 @@ const Fabric = {
     },
     subscribe: function (source, event, func)
     {
-        //Fail if there was something wrong with the event or inputs
+        //Fail if there was something wrong with the event, inputs, or this is a duplicate
         if (typeof (func) !== "function"
             || this.Queue[event] === undefined
-            || typeof (source) !== "object") return false;
+            || typeof (source) !== "object"
+            || this.Queue[event].find(v => v.source === source) !== undefined) return false;
 
         this.Queue[event].push({ func: func, source: source });
 
@@ -66,38 +67,43 @@ const Fabric = {
         this.Queue[name] = [];
         return true;
     },
-    Wrap: function (thing, override = (item, key, thing) => false, path = "") {
+    Wrap: function (thing, path = "", override = function (item, key, thing) { return false })
+    {
         let basePath = path;
         if (path[0] !== "." && path !== "") basePath = "." + path;
-        for (let key in thing) {
-    
+        for (let key in thing)
+        {
+
             if (Fabric.GlobalCatalogued.indexOf(thing[key]) !== -1) continue;
             else if (override(thing[key], key, thing)) continue;
             Fabric.GlobalCatalogued.push(thing[key]);
-    
+
             path = basePath + "." + key;
-    
-            if ((typeof(thing[key]) === "object")) {
-                Fabric.Wrap (thing[key], override, path);
-            } else if (typeof(thing[key]) === "function") {
+
+            if ((typeof (thing[key]) === "object"))
+            {
+                Fabric.Wrap(thing[key], path, override);
+            } else if (typeof (thing[key]) === "function")
+            {
                 let p = path;
-    
+
                 Fabric.addEvent("pre" + p);
                 Fabric.addEvent("post" + p);
                 let func = thing[key];
-    
-                thing[key] = function () {
-    
+
+                thing[key] = function ()
+                {
+
                     let res;
-    
-                    res = Fabric.fire("pre" + p, {args: arguments, this: this});
+
+                    res = Fabric.fire("pre" + p, { args: arguments, this: this });
                     if (res !== undefined) return res;
                     res = func.call(this, ...arguments);
-    
-                    let res2 = Fabric.fire("post" + p, {args: arguments, this: this, res: res});
-                    if(res2 === undefined) return res;
+
+                    let res2 = Fabric.fire("post" + p, { args: arguments, this: this, res: res });
+                    if (res2 === undefined) return res;
                     else return res2;
-    
+
                 }
             }
         }
