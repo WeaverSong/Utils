@@ -2,31 +2,18 @@
 let EM = new EventManager([], -1);
 let CR = new CanvasRenderer();
 let MM = new MapManager();
-document.body.appendChild(CR.canvas);
+//document.body.appendChild(CR.canvas);
 
+let h = html;
 
-let WindowDefaults = [];
-for (key in window) {
-    WindowDefaults.push(key);
-}
-
-function sayHello() {
-    console.log("Hello");
-};
-
-window.Echo = {
-    Echo: function (message) {
-        console.log(message);
-    },
-
-    This: function () {
-        console.log(this);
-    },
-
-    HelloEchos: {
-        sayHello: function (name) {console.log("Hello " + name)},
-        sayHi: function (name) {console.log("Hi " + name)},
-        This: function () {console.log(this);}
-    }
-};
-
+let Res = h.wrap(
+    h.style({
+        div: {
+            "background-color": "black",
+            width: "100px",
+            height: "100px"
+        }
+    }),
+    h.div()
+);
+console.log(Res);
