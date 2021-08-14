@@ -30,4 +30,3 @@ window.Echo = {
     }
 };
 
-Fabric.Wrap (window, (item, key) => WindowDefaults.indexOf(key) !== -1);

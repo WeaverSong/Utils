@@ -6,11 +6,13 @@ const Fabric = {
         //Return if the event doesn't exist.
         if (this.Queue[event] === undefined) return;
 
+        let res;
         this.Queue[event].forEach(ele =>
         {
-            let res = ele.func(triggers);
-            if (res !== undefined) return res;
+            if (res !== undefined) return;
+            res = ele.func(triggers);
         });
+        return res;
     },
     subscribe: function (source, event, func)
     {
@@ -67,45 +69,125 @@ const Fabric = {
         this.Queue[name] = [];
         return true;
     },
-    Wrap: function (thing, path = "", override = function (item, key, thing) { return false })
+    ProxyRecursive: function (thing, path = "", override = function (item, key, thing) { return false })
     {
         let basePath = path;
         if (path[0] !== "." && path !== "") basePath = "." + path;
         for (let key in thing)
         {
 
-            if (Fabric.GlobalCatalogued.indexOf(thing[key]) !== -1) continue;
-            else if (override(thing[key], key, thing)) continue;
-            Fabric.GlobalCatalogued.push(thing[key]);
+            if (override(thing[key], key, thing)) continue;
 
             path = basePath + "." + key;
 
+            Fabric.Proxy(key, thing, path);
+
             if ((typeof (thing[key]) === "object"))
             {
-                Fabric.Wrap(thing[key], path, override);
-            } else if (typeof (thing[key]) === "function")
-            {
-                let p = path;
-
-                Fabric.addEvent("pre" + p);
-                Fabric.addEvent("post" + p);
-                let func = thing[key];
-
-                thing[key] = function ()
-                {
-
-                    let res;
-
-                    res = Fabric.fire("pre" + p, { args: arguments, this: this });
-                    if (res !== undefined) return res;
-                    res = func.call(this, ...arguments);
-
-                    let res2 = Fabric.fire("post" + p, { args: arguments, this: this, res: res });
-                    if (res2 === undefined) return res;
-                    else return res2;
-
-                }
+                Fabric.ProxyRecursive(thing[key], path, override);
             }
         }
+    },
+    Proxy: function (name, object, path) {
+
+        if (Fabric.GlobalCatalogued.indexOf(object[name]) !== -1) return;
+
+        if (path[0] !== "." && path !== "") path = "." + path;
+
+        Fabric.addEvent("get" + path);
+        Fabric.addEvent("set" + path);
+        Fabric.addEvent("run.pre" + path);
+        Fabric.addEvent("run.post" + path);
+        Fabric.addEvent("new" + path);
+        Fabric.addEvent("defineProperty" + path);
+        Fabric.addEvent("deleteProperty" + path);
+        Fabric.addEvent("getOwnPropertyDescriptor" + path);
+        Fabric.addEvent("getPrototypeOf" + path);
+        Fabric.addEvent("has" + path);
+        Fabric.addEvent("isExtensible" + path);
+        Fabric.addEvent("ownKeys" + path);
+        Fabric.addEvent("preventExtensions" + path);
+        Fabric.addEvent("setPrototypeOf" + path);
+
+        object[name] = new Proxy(object[name], {
+            get: function (obj, prop) {
+                let res = Fabric.fire("get" + path, {object: obj, key: prop});
+                if (res === undefined) return obj[prop];
+                return res;
+            },
+            set: function (obj, prop, value) {
+                let res = Fabric.fire("set" + path, {object: obj, key: prop, value: value});
+                if (res === undefined) {
+                    obj[prop] = value;
+                } else {
+                    obj[prop] = res;
+                }
+                return true;
+            },
+            apply: function (func, thisArg, argumentsList) {
+                let res = Fabric.fire("run.pre" + path, {function: func, this: thisArg, arguments: argumentsList});
+                
+                if (res !== undefined) return res;
+
+                res = func.call(thisArg, ...argumentsList)
+                
+                let res2 = Fabric.fire("run.post" + path, {function: func, this: thisArg, arguments: argumentsList, result: res});
+                if (res2 !== undefined) return res2;
+                return res;
+            },
+            construct: function (target, argumentsList) {
+                let res = Fabric.fire("new" + path, {class: target, arguments: argumentsList});
+                if (res !== undefined) return res;
+
+                return new target(...argumentsList);
+            },
+            defineProperty: function (obj, key, descriptor) {
+                let res = Fabric.fire("defineProperty" + path, {object: obj, key: key, descriptor: descriptor});
+                if (res === undefined) return Reflect.defineProperty(obj, key, descriptor);
+                return true;
+            },
+            deleteProperty: function (obj, key) {
+                let res = Fabric.fire("deleteProperty" + path, {object: obj, key: key});
+                if (res === undefined) return Reflect.deleteProperty(obj, key);
+                return true;
+            },
+            getOwnPropertyDescriptor: function (obj, key) {
+                let res = Fabric.fire("getOwnPropertyDescriptor" + path, {object: obj, key: key});
+                if (res === undefined) return Reflect.getOwnPropertyDescriptor(obj, key);
+                return res;
+            },
+            getPrototypeOf: function (obj) {
+                let res = Fabric.fire("getPrototypeOf" + path, {object: obj});
+                if (res === undefined) return Reflect.getPrototypeOf(obj);
+                return res;
+            },
+            has: function (obj, key) {
+                let res = Fabric.fire("has" + path, {object: obj, key});
+                if (res === undefined) return key in obj;
+                return res;
+            },
+            isExtensible: function (obj) {
+                Fabric.fire("isExtensible" + path, {object: obj});
+                return Reflect.isExtensible(obj);
+            },
+            ownKeys: function (obj) {
+                let res = Fabric.fire("ownKeys" + path, {object: obj});
+                if (res === undefined) return Reflect.ownKeys(obj);
+                return res;
+            },
+            preventExtensions: function (obj) {
+                let res = Fabric.fire("preventExtensions" + path, {object: obj});
+                if (res === undefined) return !Reflect.isExtensible(obj);
+                return res;
+            },
+            setPrototypeOf: function (obj, prototype) {
+                let res = Fabric.fire("setPrototypeOf" + path, {object: obj, prototype});
+                if (res === undefined) return Reflect.setPrototypeOf(obj, prototype);
+                return res;
+            }
+
+        });
+
+        Fabric.GlobalCatalogued.push(object[name]);
     }
 };
