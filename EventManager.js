@@ -5,7 +5,7 @@
 */
 class EventManager
 {
-    constructor(events = [], tickLength = 16)
+    constructor(events = [], doTick = true)
     {
         //Prepare a blank queue.
         this.Queue = {
@@ -32,7 +32,7 @@ class EventManager
 
         //Call the tick function
         //Skip if the tick length is negative
-        if (this.tickLength > 0) setInterval(() => this.#tick(), tickLength)
+        if (doTick) this.startTick();
 
     }
 
@@ -106,7 +106,7 @@ class EventManager
 
             return true;
         }
-    }
+    };
 
     //Clears the specified event, or all events if none was specified.
     clearEvent(event)
@@ -140,7 +140,7 @@ class EventManager
         }
 
         return true
-    }
+    };
 
     //Adds a new event.
     addEvent(name, condition)
@@ -150,7 +150,7 @@ class EventManager
             condition
         };
         return true;
-    }
+    };
 
     //Removes an event
     removeEvent(name)
@@ -158,7 +158,7 @@ class EventManager
         if (this.Queue[name] === undefined) return false;
         delete this.Queue[name];
         return true;
-    }
+    };
 
     //Internal tick function.
     #tick()
@@ -179,6 +179,14 @@ class EventManager
             console.error("Tick function failed.", e);
             
         }
+    };
+
+    stopTick() {
+        cancelAnimationFrame(this.tick);
+    };
+
+    startTick() {
+        this.tick = requestAnimationFrame(() => this.#tick());
     }
 
 };
