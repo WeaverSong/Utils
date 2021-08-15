@@ -1,5 +1,8 @@
 const html = new Proxy({
-    wrap: (...args) => args.join(""),
+    wrap: (...args) => {
+        if (typeof(args[0]) === "string") return args.join("");
+        return (args[0].join(""));
+    },
     style: (input) => {
         if (typeof(input) === "string") return `<style>${input}</style>`;
 
@@ -42,8 +45,7 @@ const html = new Proxy({
             for (key in props) {
                 propString += `${key}="${props[key]}"`;
             }
-            if (inner === "") return `<${name}${propString}/>`;
-
+            
             return `<${name}${propString}>${inner}</${name}>`;
         }
     }
