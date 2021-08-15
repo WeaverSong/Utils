@@ -24,4 +24,6 @@ let Res = h.wrap(
     h.div({id: "hi"})
 );
 
-console.log(Res);
+//console.log(Res);
+
+let CF = new CanFlex();
