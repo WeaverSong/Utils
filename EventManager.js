@@ -26,12 +26,7 @@ class EventManager
         //Add an array of events
         events.forEach(i => this.addEvent(i.name, i.condition));
 
-        //Calls the tick event every tickLength ms. Tracks how long it has been between each tick, to give a warning if it is lagging.
-        this.lastTick = Date.now();
-        this.tickLength = tickLength;
-
         //Call the tick function
-        //Skip if the tick length is negative
         if (doTick) this.startTick();
 
     }
@@ -165,13 +160,6 @@ class EventManager
     {
         try
         {
-            //Check how long it has been since the last tick. Send warning if tick was late.
-            let time = Date.now();
-            let tickLength = time - this.lastTick;
-            //if (tickLength - this.tickLength > 100) console.warn(`EventManager is lagging behind by ${tickLength - this.tickLength}ms.`);
-            this.lastTick = time;
-
-            //fire the tick events, and schedule ourselves for the next tick
             this.fire('preTick');
             this.fire('tick');
             this.fire('postTick');
