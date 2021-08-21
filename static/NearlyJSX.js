@@ -1,4 +1,4 @@
-const html = new Proxy({
+const NearlyJSX = new Proxy({
     style: (input) => {
 
         let style = document.createElement('style');

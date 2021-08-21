@@ -1,10 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-//const Router = require('./routes');
-//const ErrorPage = require('./routes/404');
+const Router = require('./Router');
+const _ = require('./NotQuiteJSX');
 const rel = (r) => path.join(__dirname, r);
-//const _ = require('./NotQuiteJSX');
 const PORT = process.env.PORT || 3000;
 
 let app = express();
@@ -12,7 +11,7 @@ let app = express();
 app.use(express.static('static'));
 app.use(cors());
 app.use(express.json());
-//app.use('/api/', Router);
+app.use('/', Router);
 
 
 app.use((request, response) => {

@@ -50,3 +50,5 @@ const NotQuiteJSX = new Proxy({
         }
     }
 });
+
+module.exports = NotQuiteJSX;
