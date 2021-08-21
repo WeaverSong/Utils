@@ -1,0 +1,19 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WeaverSong/Utils.git"
+  },
+  "author": "WeaverSong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WeaverSong/Utils/issues"
+  },
+  "homepage": "https://github.com/WeaverSong/Utils#readme"
+}
