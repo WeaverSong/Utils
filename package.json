@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/WeaverSong/Utils/issues"
   },
-  "homepage": "https://github.com/WeaverSong/Utils#readme"
+  "homepage": "https://github.com/WeaverSong/Utils#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
 }
