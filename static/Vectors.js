@@ -64,6 +64,12 @@ class Vec2 {
     Normalized () {
         return Vec2.Normalized(this);
     };
+    //Absolutes the vector
+    Absolute () {
+        this.x = Math.abs(this.x);
+        this.y = Math.abs(this.y);
+        return this;
+    }
 
 
     //Static methods
@@ -102,6 +108,11 @@ class Vec2 {
         let vec = new Vec2(x, y);
         return vec.Divide(vec.Magnitude());
     };
+    //Returns the absoluted form of the vector, by single or double input
+    static Absolute (x, y) {
+        let vec = new Vec2(x, y);
+        return vec.Absolute();
+    }
 };
 
 //Takes an object with x, y and z, an array of 3 items, 3 numbers, or 1 number.
@@ -183,6 +194,13 @@ class Vec3 {
     Normalized () {
         return Vec3.Normalized(this);
     };
+    //Absolutes the vector
+    Absolute () {
+        this.x = Math.abs(this.x);
+        this.y = Math.abs(this.y);
+        this.z = Math.abs(this.z);
+        return this;
+    }
 
 
     //Static methods
@@ -221,6 +239,11 @@ class Vec3 {
         let vec = new Vec3(x, y, z);
         return vec.Divide(vec.Magnitude());
     };
+    //Returns the absoluted form of the vector, by single or triple input
+    static Absolute (x, y, z) {
+        let vec = new Vec3(x, y, z);
+        return vec.Absolute();
+    }
 };
 
 //Creates a vector with an arbitrary number of values. Can take in a VecX, Vec2, Vec3, Array, or number;
@@ -295,6 +318,10 @@ class VecX {
     Normalized () {
         return VecX.Normalized(this);
     }
+    //Absolutes the vector
+    Absolute () {
+        this.value = this.values.map(i => Math.abs(i));
+    }
 
 
     //Static methods
@@ -333,4 +360,9 @@ class VecX {
         vec = new VecX (vec);
         return vec.Divide(vec.Magnitude());
     };
+    //Returns the absoluted form of a Vector-type
+    static Absolute (vec) {
+        let Vec = new VecX(vec);
+        return Vec.Absolute();
+    }
 }
