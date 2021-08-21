@@ -1,8 +1,8 @@
 //For debugging the various modules
-let EM = new EventManager([], -1);
+let EM = new EventManager([], false);
 let CR = new CanvasRenderer();
 let MM = new MapManager();
-//document.body.appendChild(CR.canvas);
+document.body.appendChild(CR.canvas);
 
 let h = html;
 
@@ -25,5 +25,3 @@ let Res = h.wrap(
 );
 
 //console.log(Res);
-
-let CF = new CanFlex();

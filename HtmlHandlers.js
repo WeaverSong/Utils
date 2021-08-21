@@ -11,7 +11,7 @@ const HandleSubs = function (element, property, properties)
     }
 }
 //Makes a new element, adds it to the parent, and adds all specified properties and event listeners
-const AddElement = function (type, parent, properties, eventListeners)
+const AddElement = function (type, parent, properties, eventListeners, attributes)
 {
     let NewElement = document.createElement(type);
 
@@ -20,6 +20,11 @@ const AddElement = function (type, parent, properties, eventListeners)
     for (key in eventListeners)
     {
         NewElement.addEventListener(key, eventListeners[key]);
+    }
+
+    for (key in attributes)
+    {
+        NewElement.setAttribute(key, attributes[key]);
     }
 
     if (parent) parent.appendChild(NewElement);

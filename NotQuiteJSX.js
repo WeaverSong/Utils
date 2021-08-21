@@ -49,4 +49,4 @@ const html = new Proxy({
             return `<${name}${propString}>${inner}</${name}>`;
         }
     }
-})
+});
