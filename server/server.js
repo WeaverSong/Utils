@@ -4,7 +4,7 @@ const path = require('path');
 //const Router = require('./routes');
 //const ErrorPage = require('./routes/404');
 const rel = (r) => path.join(__dirname, r);
-const _ = require('./NotQuiteJSX');
+//const _ = require('./NotQuiteJSX');
 
 let app = express();
 
