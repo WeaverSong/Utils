@@ -5,6 +5,7 @@ const path = require('path');
 //const ErrorPage = require('./routes/404');
 const rel = (r) => path.join(__dirname, r);
 //const _ = require('./NotQuiteJSX');
+const PORT = process.env.PORT || 3000;
 
 let app = express();
 
@@ -19,4 +20,4 @@ app.use((request, response) => {
 });
 
 
-app.listen();
+app.listen(PORT);
