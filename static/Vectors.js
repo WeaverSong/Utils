@@ -64,7 +64,7 @@ class Vec2 {
     Normalized () {
         return Vec2.Normalized(this);
     };
-    //Absolutes the vector
+    //Absolutes the vector and returns this
     Absolute () {
         this.x = Math.abs(this.x);
         this.y = Math.abs(this.y);

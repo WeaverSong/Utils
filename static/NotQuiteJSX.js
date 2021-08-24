@@ -42,11 +42,11 @@ const NotQuiteJSX = new Proxy({
 
             let propString = "";
             if (props !== undefined) propString = " ";
-            for (key in props) {
+            for (const key in props) {
                 propString += `${key}="${props[key]}"`;
             }
             
-            return `<${name}${propString}>${inner}</${name}>`;
+            return `<${String(name)}${propString}>${inner}</${String(name)}>`;
         }
     }
 });

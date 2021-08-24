@@ -151,6 +151,7 @@ class EventManager
     removeEvent(name)
     {
         if (this.Queue[name] === undefined) return false;
+
         delete this.Queue[name];
         return true;
     };
@@ -170,11 +171,15 @@ class EventManager
     };
 
     stopTick() {
+        if (this.tick === undefined) return false;
         cancelAnimationFrame(this.tick);
+        return true;
     };
 
     startTick() {
+        if (this.tick !== undefined) return false;
         this.tick = requestAnimationFrame(() => this.#tick());
+        return true;
     }
 
 };

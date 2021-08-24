@@ -1,0 +1,113 @@
+[
+    {
+        "fileName": "CanvasRenderer",
+        "items": {
+            "CanvasRenderer": {
+                "type": "Class",
+                "constructor": {
+                    "arguments": [
+                        {
+                            "name": "Defaults",
+                            "type": "Object",
+                            "description": "The default settings, which it will start with"
+                        },
+                        {
+                            "name": "Canvas",
+                            "type": "HTMLCanvasElement",
+                            "optional": true,
+                            "description": "The canvas to use for rendering"
+                        }
+                    ]
+                },
+                "data": {
+                    "defaults": {
+                        "type": "Object",
+                        "description": "The default settings"
+                    },
+                    "settings": {
+                        "type": "Object",
+                        "description": "The current settings"
+                    },
+                    "canvas": {
+                        "type": "HTMLCanvasElement",
+                        "description": "The canvas used for rendering"
+                    },
+                    "ctx": {
+                        "type": "CanvasContext2D",
+                        "description": "The context of the canvas used for rendering"
+                    }
+                },
+                "methods": {
+                    "Settings": {
+                        "arguments": [
+                            {
+                                "name": "Settings",
+                                "type": "Object",
+                                "description": "Settings object to replace current settings. Skipped values will not be changed."
+                            }
+                        ],
+                        "returns": [
+                            {
+                                "type": "Object",
+                                "description": "The current settings object",
+                                "condition": "No arguments given"
+                            }
+                        ]
+                    },
+                    "Defaults": {
+                        "arguments": [
+                            {
+                                "name": "Defaults",
+                                "type": "Object",
+                                "description": "Settings object to replace current defaults."
+                            }
+                        ],
+                        "returns": [
+                            {
+                                "type": "Object",
+                                "description": "The current default settings object",
+                                "condition": "No arguments given"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "description": "More elegant and flexible replacement to Processing JS"
+    },
+    {
+        "fileName": "EventManager",
+        "items": ["EventManager"],
+        "description": "Handles events. All methods return a boolean of whether they succeeded"
+    },
+    {
+        "fileName": "Fabric",
+        "items": ["Fabric"],
+        "description": "Modcore. Proxies js and handles events for them. Built for es5"
+    },
+    {
+        "fileName": "HtmlHandlers",
+        "items": ["HandleSubs", "AddElement", "EditElement"],
+        "description": "Helper functions for dealing with the DOM"
+    },
+    {
+        "fileName": "MapManager",
+        "items": ["MapManager"],
+        "description": "For managing largely-static maps. Avoids re-rendering as much as possible"
+    },
+    {
+        "fileName": "NearlyJSX",
+        "items": ["NearlyJSX"],
+        "description": "Imitates JSX abilities. Returns DOM elements"
+    },
+    {
+        "fileName": "NotQuiteJSX",
+        "items": ["NotQuiteJSX"],
+        "description": "NearlyJSX for servers. Returns text"
+    },
+    {
+        "fileName": "Vectors",
+        "items": ["Vec2", "Vec3", "VecX"],
+        "description": "Vector classes"
+    }
+]
