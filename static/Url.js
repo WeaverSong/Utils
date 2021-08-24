@@ -12,7 +12,7 @@ const url = {
             });
 
             let ResBody = await data.json();
-            data.body = ResBody;
+            data.content = ResBody;
 
             //Not rejecting, so you still get the data returned
             return data;
@@ -31,7 +31,7 @@ const url = {
             });
 
             let ResBody = await data.json();
-            data.body = ResBody;
+            data.content = ResBody;
 
             //Not rejecting, so you still get the data returned
             return data;
@@ -49,7 +49,7 @@ const url = {
             });
 
             let ResBody = await data.json();
-            data.body = ResBody;
+            data.content = ResBody;
 
             //Not rejecting, so you still get the data returned
             return data;
@@ -67,7 +67,7 @@ const url = {
             });
 
             let ResBody = await data.json();
-            data.body = ResBody;
+            data.content = ResBody;
 
             //Not rejecting, so you still get the data returned
             return data;

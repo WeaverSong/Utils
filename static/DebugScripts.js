@@ -51,7 +51,7 @@ class Tentacle {
 
     Render (Renderer) {
         let Dir = Vec2.Subtract(this.entity.loc, Vec2.Add(this.entity.loc, this.entity.vel)).Absolute().Normalize();
-        let PerpDir = Vec2();
+        let PerpDir = new Vec2();
         this.offsets.forEach(i => {
             i.offset += i.changeDir;
             if (i.offset > maxOffset) {
