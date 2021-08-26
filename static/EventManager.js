@@ -157,16 +157,16 @@ class EventManager
     };
 
     //Internal tick function.
-    #tick()
+    #tick(e)
     {
         try
         {
             this.fire('preTick');
             this.fire('tick');
             this.fire('postTick');
+            this.tick = requestAnimationFrame(e => this.#tick(e));
         } catch (e) {
             console.error("Tick function failed.", e);
-            
         }
     };
 
@@ -178,7 +178,7 @@ class EventManager
 
     startTick() {
         if (this.tick !== undefined) return false;
-        this.tick = requestAnimationFrame(() => this.#tick());
+        this.tick = requestAnimationFrame(e => this.#tick(e));
         return true;
     }
 

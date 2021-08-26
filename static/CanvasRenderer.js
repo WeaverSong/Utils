@@ -607,7 +607,7 @@ class CanvasRenderer
         if (Positions[0].type === undefined || Positions[0].type === "Point")
         {
             this.ctx.moveTo(Positions[0].x, Positions[0].y);
-            Positions.splice(0, 1);
+            if (Positions.length > 1) Positions.splice(0, 1);
         }
         Positions.forEach(i =>
         {
