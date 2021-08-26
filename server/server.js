@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 let app = express();
 
 app.use(express.static('static'));
+app.use('/ts', express.static('ts'));
 app.use(cors());
 app.use(express.json());
 app.use('/', Router);
