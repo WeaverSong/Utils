@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "outDir": "./static",
+    "outDir": "./js",
     "strict": true,
     "forceConsistentCasingInFileNames": true,        /* Disallow inconsistently-cased references to the same file. */
+    "moduleResolution": "Node"
   },
-  "include": ["./ts/**/*"]
+  "include": ["./ts/**/*.ts"],
 }
