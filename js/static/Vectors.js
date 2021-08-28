@@ -76,6 +76,28 @@ class Vec2 {
         this.y = Math.abs(this.y);
         return this;
     }
+    ;
+    //Rotates the vector towards the specified vector/point with multiplicate % and returns this;
+    RotateTowardsMult(percent, x, y) {
+        let Mag = this.Magnitude();
+        let B = new Vec2(x, y).Normalize();
+        this.Normalize();
+        let VecLine = Vec2.Subtract(B, this).Multiply(percent);
+        this.Add(VecLine);
+        this.Normalize().Multiply(Mag);
+        return this;
+    }
+    ;
+    //Rotates the vector towards the specified vector/point with multiplicate % and returns this;
+    RotateTowardsAdd(amount, x, y) {
+        let Mag = this.Magnitude();
+        let B = new Vec2(x, y);
+        let VecLine = Vec2.Subtract(B, this).Normalize().Multiply(amount);
+        this.Add(VecLine);
+        this.Normalize().Multiply(Mag);
+        return this;
+    }
+    ;
     //Static methods
     //Add 2 vectors, or a vector and a number
     static Add(vec1, vec2) {
@@ -114,6 +136,8 @@ class Vec2 {
     //Returns the normalized form of the vector, by single or double input
     static Normalized(x, y) {
         let vec = new Vec2(x, y);
+        if (vec.Magnitude() === 0)
+            return new Vec2(0);
         return vec.Divide(vec.Magnitude());
     }
     ;
@@ -121,6 +145,18 @@ class Vec2 {
     static Absolute(x, y) {
         let vec = new Vec2(x, y);
         return vec.Absolute();
+    }
+    //Returns the value of the first vector, rotated towards the second by multiplicative percent
+    static RotateTowardsMult(vec1, vec2, percent) {
+        let A = new Vec2(vec1);
+        let B = new Vec2(vec2);
+        return A.RotateTowardsMult(percent, B);
+    }
+    //Returns the value of the first vector, rotated towards the second by additive amount
+    static RotateTowardsAdd(vec1, vec2, percent) {
+        let A = new Vec2(vec1);
+        let B = new Vec2(vec2);
+        return A.RotateTowardsAdd(percent, B);
     }
 }
 ;

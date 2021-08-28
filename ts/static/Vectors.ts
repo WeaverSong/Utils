@@ -75,7 +75,26 @@ class Vec2 {
         this.x = Math.abs(this.x);
         this.y = Math.abs(this.y);
         return this;
-    }
+    };
+    //Rotates the vector towards the specified vector/point with multiplicate % and returns this;
+    RotateTowardsMult (percent: number, x: Vec2Type, y?: number) {
+        let Mag = this.Magnitude();
+        let B = new Vec2(x, y).Normalize();
+        this.Normalize();
+        let VecLine = Vec2.Subtract(B, this).Multiply(percent);
+        this.Add(VecLine);
+        this.Normalize().Multiply(Mag);
+        return this;
+    };
+    //Rotates the vector towards the specified vector/point with multiplicate % and returns this;
+    RotateTowardsAdd (amount: number, x: Vec2Type, y?: number) {
+        let Mag = this.Magnitude();
+        let B = new Vec2(x, y);
+        let VecLine = Vec2.Subtract(B, this).Normalize().Multiply(amount);
+        this.Add(VecLine);
+        this.Normalize().Multiply(Mag);
+        return this;
+    };
 
 
     //Static methods
@@ -112,12 +131,25 @@ class Vec2 {
     //Returns the normalized form of the vector, by single or double input
     static Normalized (x: Vec2Type, y?: number) {
         let vec = new Vec2(x, y);
+        if (vec.Magnitude() === 0) return new Vec2(0);
         return vec.Divide(vec.Magnitude());
     };
     //Returns the absoluted form of the vector, by single or double input
     static Absolute (x: Vec2Type, y?: number) {
         let vec = new Vec2(x, y);
         return vec.Absolute();
+    }
+    //Returns the value of the first vector, rotated towards the second by multiplicative percent
+    static RotateTowardsMult (vec1: Vec2Type, vec2: Vec2Type, percent: number) {
+        let A = new Vec2(vec1);
+        let B = new Vec2(vec2);
+        return A.RotateTowardsMult(percent, B);
+    }
+    //Returns the value of the first vector, rotated towards the second by additive amount
+    static RotateTowardsAdd (vec1: Vec2Type, vec2: Vec2Type, percent: number) {
+        let A = new Vec2(vec1);
+        let B = new Vec2(vec2);
+        return A.RotateTowardsAdd(percent, B);
     }
 };
 
