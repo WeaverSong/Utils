@@ -285,6 +285,8 @@ class Vec3 {
     //Returns the normalized form of a vector-type, by single or triple input
     static Normalized(x, y, z) {
         let vec = new Vec3(x, y, z);
+        if (vec.Magnitude() === 0)
+            return new Vec3(0);
         return vec.Divide(vec.Magnitude());
     }
     ;
@@ -414,6 +416,8 @@ class VecX {
     //Returns the normalized form of a Vector-type
     static Normalized(vec) {
         vec = new VecX(vec);
+        if (vec.Magnitude() === 0)
+            return vec.Multiply(0);
         return vec.Divide(vec.Magnitude());
     }
     ;

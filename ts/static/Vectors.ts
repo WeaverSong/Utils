@@ -280,6 +280,7 @@ class Vec3 {
     //Returns the normalized form of a vector-type, by single or triple input
     static Normalized (x: Vec3Type, y?: number, z?: number) {
         let vec = new Vec3(x, y, z);
+        if (vec.Magnitude() === 0) return new Vec3(0);
         return vec.Divide(vec.Magnitude());
     };
     //Returns the absoluted form of the vector, by single or triple input
@@ -405,6 +406,7 @@ class VecX {
     //Returns the normalized form of a Vector-type
     static Normalized (vec: VecXType) {
         vec = new VecX (vec);
+        if (vec.Magnitude() === 0) return vec.Multiply(0);
         return vec.Divide(vec.Magnitude());
     };
     //Returns the absoluted form of a Vector-type
