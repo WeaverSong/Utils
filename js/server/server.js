@@ -1,7 +1,8 @@
-import * as express from 'express';
-import * as cors from 'cors';
-import * as path from 'path';
-import { Routes as Router } from './Router';
+"use strict";
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const Router = require('./Router/index.js');
 const rel = (r) => path.join(__dirname, r);
 const PORT = process.env.PORT || 3000;
 let app = express();

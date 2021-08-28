@@ -1,5 +1,6 @@
 import * as express from 'express';
 
-export let Routes = express.Router();
+let Routes = express.Router();
 
+module.exports = Routes;
 //Routes.use('/chirps/', ChirpRouter);
