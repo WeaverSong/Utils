@@ -1,3 +1,4 @@
+"use strict";
 const express = require('express');
 let Routes = express.Router();
 module.exports = Routes;
