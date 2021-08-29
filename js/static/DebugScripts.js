@@ -1,41 +1,20 @@
 "use strict";
-//For debugging the various modules
+//Create event manager and canvas to display things on
 let EM = new EventManager();
 let CR = new CanvasRenderer({ size: { width: window.innerWidth, height: window.innerHeight } });
 document.body.appendChild(CR.canvas);
-const A = new Vec2(50, 50);
-const B = new Vec2(-50, 50);
-const C = new Vec2(0, -50);
-const D = new Vec2(0, -50);
-let MouseVec = new Vec2(window.innerWidth / 2, window.innerHeight / 2);
-EM.subscribe(this, 'tick', () => {
-    A.RotateTowardsAdd(5, MouseVec);
-    B.RotateTowardsMult(0.05, MouseVec.x - window.innerWidth, MouseVec.y);
-    C.RotateTowardsAdd(5, MouseVec.x - window.innerWidth / 4, MouseVec.y - window.innerHeight / 2);
-    D.RotateTowardsMult(0.05, MouseVec.x - window.innerWidth / 4 * 3, MouseVec.y - window.innerHeight / 2);
-    CR.Reset();
-    CR.DrawShape([{ x: 0, y: 0 }, A], {
-        line: {
-            width: 5
-        }
-    });
-    CR.DrawShape([{ x: window.innerWidth, y: 0 }, { x: B.x + window.innerWidth, y: B.y }], {
-        line: {
-            width: 5
-        }
-    });
-    CR.DrawShape([{ x: window.innerWidth / 4, y: window.innerHeight / 2 }, { x: C.x + window.innerWidth / 4, y: C.y + window.innerHeight / 2 }], {
-        line: {
-            width: 5
-        }
-    });
-    CR.DrawShape([{ x: window.innerWidth / 4 * 3, y: window.innerHeight / 2 }, { x: D.x + window.innerWidth / 4 * 3, y: D.y + window.innerHeight / 2 }], {
-        line: {
-            width: 5
-        }
-    });
-    CR.DrawShape([{ type: "Arc", x: MouseVec.x, y: MouseVec.y, startAngle: 0, endAngle: Math.PI * 2, radius: 5 }], { stroke: "#0000" });
-});
+//Create a world with our event manager and canvas
+let World = new ForgeLite(EM, CR);
+//Add a global, downwards gravity
+World.gravities.push({ Direction: new Vec2(0, 50), MaxSpeed: 10, Power: 1 });
+//Create the player
+let Obj = new PhysicsObject(new Vec2(200), new Vec2(0), 10);
+//Add the player to the world
+World.NewEntity(Obj);
+//Add another generic entity to the world
+World.NewEntity(new PhysicsObject(new Vec2(225, 300), new Vec2(0), 10));
+//Handle clicks
 CR.canvas.addEventListener('click', e => {
-    MouseVec = new Vec2(e.offsetX, e.offsetY);
+    let Power = Vec2.Subtract({ x: e.offsetX, y: e.offsetY }, Obj.pos);
+    Obj.ApplyMotion(Power, 100);
 });

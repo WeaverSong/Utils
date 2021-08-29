@@ -8,7 +8,7 @@ var _CanvasRenderer_instances, _CanvasRenderer_SetValues;
 ;
 ;
 class CanvasRenderer {
-    constructor(Defaults, Canvas = document.createElement('canvas')) {
+    constructor(Defaults = {}, Canvas = document.createElement('canvas')) {
         _CanvasRenderer_instances.add(this);
         this.defaults = {
             type: "2d",

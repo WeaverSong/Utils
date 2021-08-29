@@ -136,7 +136,7 @@ class CanvasRenderer
     ctx: CanvasRenderingContext2D;
     private ts: CanvasRendererSettings;
 
-    constructor(Defaults: CanvasRendererSettings, Canvas = document.createElement('canvas'))
+    constructor(Defaults: CanvasRendererSettings = {}, Canvas = document.createElement('canvas'))
     {
         this.defaults = {
             type: "2d",
@@ -794,7 +794,7 @@ class CanvasRenderer
         Text: string,
         Position: Point-Vector
     */
-    DrawText(Text: string, Position = { x: 0, y: 0 }, Settings: CanvasRendererSettings)
+    DrawText(Text: string, Position = { x: 0, y: 0 }, Settings?: CanvasRendererSettings)
     {
 
         this.#SetValues(Settings);
@@ -812,7 +812,7 @@ class CanvasRenderer
         Img: CanvasImageSource,
         Position: Point-Vector
     */
-    DrawImage(Img: CanvasImageSource, Position = { x: 0, y: 0 }, Settings: CanvasRendererSettings)
+    DrawImage(Img: CanvasImageSource, Position = { x: 0, y: 0 }, Settings?: CanvasRendererSettings)
     {
 
         this.#SetValues(Settings);
@@ -837,7 +837,7 @@ class CanvasRenderer
         Data: ImageData (array),
         Position: Point-Vector
     */
-    DrawImageData(Data: ImageData, Position = { x: 0, y: 0 }, Settings: CanvasRendererSettings)
+    DrawImageData(Data: ImageData, Position = { x: 0, y: 0 }, Settings?: CanvasRendererSettings)
     {
 
         this.#SetValues(Settings);
@@ -853,7 +853,7 @@ class CanvasRenderer
         this.Defaults();
     }
     //Resets a rectangular area
-    ResetRect(Point: Vector, Size: SizeVector, Settings: CanvasRendererSettings) {
+    ResetRect(Point: Vector, Size: SizeVector, Settings?: CanvasRendererSettings) {
 
         this.#SetValues(Settings);
 
